@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow), _atm(new ATM()), _loginConditionType(INPUT_CARD_NUMBER)
 {
     ui->setupUi(this);
-   init();
+   initLoginPage();
 }
 
 MainWindow::~MainWindow()
@@ -31,8 +31,10 @@ void MainWindow::on_enterBtn_clicked()
         case INPUT_PASSWORD:
         if(_atm->enterCard(*_tempNumberCard, ui->loginInput->text())) {
            _tempNumberCard = nullptr;
-           ui->stackedWidget-> setCurrentIndex(CARDS_VIEW_PAGE_NUMBER);
            _loginConditionType = ENTERED;
+           initCardsPage();
+           ui->stackedWidget-> setCurrentIndex(CARDS_VIEW_PAGE_NUMBER);
+
         }
         break;
         case ENTERED:
@@ -41,7 +43,7 @@ void MainWindow::on_enterBtn_clicked()
     }
 }
 
-void MainWindow::init() {
+void MainWindow::initLoginPage() {
     ui->loginLabel->setText(LOGIN_LABEL_TEXT);
     ui->enterBtn->setText(INSERT_BUTTON_TEXT);
     _loginConditionType = INPUT_CARD_NUMBER;
@@ -49,10 +51,17 @@ void MainWindow::init() {
 //    _atm->exit();
 };
 
+void MainWindow::initCardsPage() {
+//   TO DO
+};
+
+void MainWindow::initCardMenuPage() {
+//    _atm->exit();
+};
 void MainWindow::on_cardsPageBackBtn_clicked()
 {
     ui->stackedWidget-> setCurrentIndex(LOGIN_PAGE_NUMBER);
-    init();
+    initLoginPage();
 
 }
 

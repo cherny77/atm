@@ -34,7 +34,10 @@ private:
     ATM *_atm;
     QString *_tempNumberCard;
     LoginConditionType _loginConditionType;
-    void init();
+    void initLoginPage();
+    void initCardsPage();
+    void initCardMenuPage();
+
 };
 
 
