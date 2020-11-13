@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>852</width>
-    <height>871</height>
+    <width>600</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <widget class="QWidget" name="loginPage">
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="1">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="logoPic">
           <property name="maximumSize">
            <size>
             <width>300</width>
@@ -34,7 +34,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap>res/avatar.png</pixmap>
+           <pixmap>:/MyFiles/res/avatar.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -42,7 +42,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="loginLabel">
           <property name="text">
            <string>Login</string>
           </property>
@@ -62,7 +62,7 @@
          </spacer>
         </item>
         <item row="2" column="1">
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="loginInput"/>
         </item>
         <item row="2" column="2">
          <spacer name="horizontalSpacer_2">
@@ -78,7 +78,7 @@
          </spacer>
         </item>
         <item row="3" column="1">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="enterBtn">
           <property name="text">
            <string>go</string>
           </property>
@@ -99,6 +99,69 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="cardsPage">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QWidget" name="widget" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777212</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="cardsPageBackBtn">
+             <property name="minimumSize">
+              <size>
+               <width>157</width>
+               <height>27</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Back</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="tableLabel">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Cards</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QTableView" name="cardsTable"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="cardMenuPage">
        <property name="font">
         <font>
@@ -107,7 +170,7 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="cardMenuPageBackBtn">
           <property name="text">
            <string>Back</string>
           </property>
@@ -127,7 +190,7 @@
          </spacer>
         </item>
         <item row="1" column="0">
-         <widget class="QFrame" name="frame">
+         <widget class="QFrame" name="btnsFrame">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -149,28 +212,28 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_3">
+            <widget class="QPushButton" name="rechargeBtn">
              <property name="text">
               <string>Recharge</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_4">
+            <widget class="QPushButton" name="withdrawBtn">
              <property name="text">
               <string>Withdraw</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_6">
+            <widget class="QPushButton" name="changePasswordBtn">
              <property name="text">
               <string>Change password</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_7">
+            <widget class="QPushButton" name="transferBtn">
              <property name="text">
               <string>Transfer</string>
              </property>
@@ -193,7 +256,7 @@
          </spacer>
         </item>
         <item row="1" column="3">
-         <widget class="QFrame" name="frame_2">
+         <widget class="QFrame" name="infoFrame">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -209,7 +272,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLabel" name="label_4">
+            <widget class="QLabel" name="moneyLabel">
              <property name="text">
               <string>TextLabel</string>
              </property>
@@ -223,7 +286,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLabel" name="label_6">
+            <widget class="QLabel" name="cardNumberLabel">
              <property name="text">
               <string>TextLabel</string>
              </property>
@@ -247,7 +310,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_3"/>
      </widget>
     </item>
    </layout>
@@ -257,7 +319,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>852</width>
+     <width>600</width>
      <height>21</height>
     </rect>
    </property>
