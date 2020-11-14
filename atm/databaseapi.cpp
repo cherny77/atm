@@ -1,5 +1,6 @@
 #include "databaseapi.h"
 #include <QCryptographicHash>
+#include <iostream>
 
 DataBaseApi* DataBaseApi::dataBaseApi = nullptr;
 
@@ -8,19 +9,42 @@ DBCard::DBCard(QString cardNumber, QString cardCode, bool isBlocked, long long a
 DataBaseApi::DataBaseApi()
 {
 
-    QCryptographicHash* crypt = new QCryptographicHash(QCryptographicHash::Md5);
-    crypt->addData(QString("1").toUtf8());
-    crypt->addData(QString("1").toUtf8());
-
     this->map = QMap<size_t, QList<DBCard>>();
+    this->addCard(1, "1", "1", true, 100);
+    this->addCard(1, "11", "11", false, 1000);
+    this->addCard(2, "22", "22", false, 100);
+    this->addCard(2, "2", "2", false, 1000);
+}
 
-    QList<DBCard> list1 = QList<DBCard>();
-    DBCard bdcard1 = DBCard(QString("1"), QString(crypt->result()), false, 0);
-    list1.append(bdcard1);
-    this->map.insert(1, list1);
+void DataBaseApi::addCard(size_t acc, QString number, QString pin, bool isBlocked, long long amount)
+{
+    QCryptographicHash* crypt = new QCryptographicHash(QCryptographicHash::Md5);
+    crypt->addData(number.toUtf8());
+    crypt->addData(pin.toUtf8());
 
-    crypt->reset();
+    DBCard dbcard = DBCard(number, QString(crypt->result()), isBlocked, amount);
+    if (this->map.contains(acc))
+    {
+        if (!this->map[acc].contains(dbcard))
+        {
+            this->map[acc].append(dbcard);
+        }
+        delete crypt;
+        return;
+    }
+    QList<DBCard> list = QList<DBCard>();
+    list.append(dbcard);
+    this->map.insert(acc, list);
     delete crypt;
+
+    for(size_t i: this->map.keys())
+    {
+        for(DBCard card: this->map[i])
+        {
+//            std::cout << card << std::endl;
+        }
+    }
+    std::cout << "------------------------------------------------------------------------------------------------------" << std::endl;
 }
 
 DataBaseApi* DataBaseApi::getDataBaseApi() {
@@ -38,7 +62,7 @@ bool DataBaseApi::existCard(QString number)
     {
         for(DBCard dbcard : this->map.find(accId).value())
         {
-            if (dbcard ._cardNumber == number) {
+            if (dbcard ._cardNumber == number && !dbcard._isBlocked) {
                 return true;
             };
         }
@@ -68,7 +92,7 @@ bool DataBaseApi::enterCard(QString number, QString code)
     {
         for(DBCard dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number))
+            if ((dbcard._cardNumber == number) && !dbcard._isBlocked)
             {
                 return dbcard._cardCode == code;
             }

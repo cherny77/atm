@@ -14,6 +14,18 @@ struct DBCard{
     DBCard(QString cardNumber, QString cardCode, bool isBlocked, long long amount);
 };
 
+bool operator==(const DBCard &a, const DBCard &b)
+{
+    return a._cardNumber == b._cardNumber;
+}
+
+std::ostream& operator<<(std::ostream& os, const DBCard& card)
+{
+    os << card._cardNumber->toStdString() << " : " << card._isBlocked << " : " << "{" << card._cardCode->toStdString() << "}"<< " : " << card._amount;
+    return os;
+}
+
+
 class DataBaseApi
 {
 public:
@@ -50,6 +62,7 @@ private:
     ~DataBaseApi();
     static DataBaseApi* dataBaseApi;
     QMap<size_t, QList<DBCard>> map;
+    void addCard(size_t acc, QString number, QString pin, bool isBlocked, long long amount);
 };
 
 #endif // DATABASEAPI_H
