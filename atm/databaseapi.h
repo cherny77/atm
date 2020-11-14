@@ -21,7 +21,7 @@ bool operator==(const DBCard &a, const DBCard &b)
 
 std::ostream& operator<<(std::ostream& os, const DBCard& card)
 {
-    os << card._cardNumber->toStdString() << " : " << card._isBlocked << " : " << "{" << card._cardCode->toStdString() << "}"<< " : " << card._amount;
+    os << card._cardNumber->toStdString() << " : " << card._isBlocked << " : " << card._amount;
     return os;
 }
 

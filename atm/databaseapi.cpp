@@ -36,15 +36,6 @@ void DataBaseApi::addCard(size_t acc, QString number, QString pin, bool isBlocke
     list.append(dbcard);
     this->map.insert(acc, list);
     delete crypt;
-
-    for(size_t i: this->map.keys())
-    {
-        for(DBCard card: this->map[i])
-        {
-//            std::cout << card << std::endl;
-        }
-    }
-    std::cout << "------------------------------------------------------------------------------------------------------" << std::endl;
 }
 
 DataBaseApi* DataBaseApi::getDataBaseApi() {
@@ -319,25 +310,4 @@ Card* DataBaseApi::blockCardGetCard(QString number)
     }
     return nullptr;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
