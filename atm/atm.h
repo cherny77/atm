@@ -8,6 +8,8 @@ private:
   Card* _currentCard;
 public:
   bool existCard(QString cardNumber);
+
+
   bool enterCard(QString cardNumber, QString password);
     ATM();
   const Card* currentCard();

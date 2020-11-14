@@ -11,9 +11,7 @@ ATM::ATM()
 
 
 bool ATM::existCard(QString cardNumber) {
-    std::cout<< cardNumber.toStdString() << std::endl;
     return DataBaseApi::getDataBaseApi()->existCard(cardNumber);
-//    return true;
 };
 bool ATM::enterCard(QString cardNumber, QString password)
 {
@@ -23,5 +21,4 @@ bool ATM::enterCard(QString cardNumber, QString password)
     QString code = QString(crypt->result());
     delete crypt;
     return DataBaseApi::getDataBaseApi()->enterCard(cardNumber, code);
-//    return true;
 };
