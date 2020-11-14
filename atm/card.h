@@ -13,7 +13,7 @@ public:
     void changePin(QString newPin);
     void transferTo(QString cardNumberTo, long long amount);
     void block();
-    Card();
+    Card(QString cardNumber, bool isBlocked);
 };
 
 #endif // CARD_H
