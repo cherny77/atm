@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTableWidgetItem>
 #include "atm.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,6 +29,8 @@ public:
 private slots:
     void on_enterBtn_clicked();
     void on_cardsPageBackBtn_clicked();
+
+    void on_cardsTableTest_itemDoubleClicked(QTableWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;

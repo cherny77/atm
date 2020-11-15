@@ -12,6 +12,7 @@ SOURCES += \
     account.cpp \
     atm.cpp \
     card.cpp \
+    databaseapi.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -19,6 +20,7 @@ HEADERS += \
     account.h \
     atm.h \
     card.h \
+    databaseapi.h \
     mainwindow.h
 
 FORMS += \
