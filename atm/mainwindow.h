@@ -23,6 +23,7 @@ public:
     const int LOGIN_PAGE_NUMBER = 0;
     const int CARDS_VIEW_PAGE_NUMBER = 1;
     const int CARD_MENU_VIEW_PAGE_NUMBER = 2;
+    void initCardMenuPage();
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -32,6 +33,16 @@ private slots:
 
     void on_cardsTableTest_itemDoubleClicked(QTableWidgetItem *item);
 
+    void on_cardMenuPageBackBtn_clicked();
+
+    void on_rechargeBtn_clicked();
+
+    void on_withdrawBtn_clicked();
+
+    void on_changePasswordBtn_clicked();
+
+    void on_transferBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     ATM *_atm;
@@ -39,7 +50,7 @@ private:
     LoginConditionType _loginConditionType;
     void initLoginPage();
     void initCardsPage();
-    void initCardMenuPage();
+
 
 };
 

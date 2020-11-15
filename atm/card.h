@@ -18,6 +18,7 @@ public:
     const QString* cardNumber() const;
     bool isBlocked() const;
     long long amount() const;
+    Card& operator=(const Card& right);
 };
 
 #endif // CARD_H

@@ -24,7 +24,7 @@ bool ATM::enterCard(QString cardNumber, QString password)
 };
 
 
-const Card* ATM::currentCard()
+ Card* ATM::currentCard()
 {
     return this->_currentCard;
 };

@@ -14,3 +14,10 @@ const QList<Card>* Account::getCards() const
 {
     return this->_cards;
 }
+
+Card* Account::getCurrentCard()
+{
+    if (_currCardIndex >= 0 && _currCardIndex < _cards->length())
+    return &((*_cards)[_currCardIndex]);
+    else return nullptr;
+}

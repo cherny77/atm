@@ -13,7 +13,7 @@ public:
   bool enterCard(QString cardNumber, QString password);
   ATM();
 
-  const Card* currentCard();
+  Card* currentCard();
   const Account* currentAccount();
   void setCurrent(QString cardNumber);
   void exit();

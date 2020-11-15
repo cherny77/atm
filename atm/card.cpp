@@ -17,6 +17,7 @@ void Card::recharge(long long amount)
     {
         throw "operation failed";
     }
+
 }
 
 void Card::changePin(QString newPin)
@@ -56,3 +57,13 @@ long long Card::amount() const
 {
     return this->_amount;
 }
+
+Card& Card::operator=(const Card& right) {
+        if (this == &right) {
+            return *this;
+        }
+       _amount = right.amount();
+       _cardNumber = right._cardNumber;
+       _isBlocked = isBlocked();
+        return *this;
+    }

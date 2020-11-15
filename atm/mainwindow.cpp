@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "withdrawrechargedialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -69,7 +70,7 @@ void MainWindow::initCardsPage() {
     QHeaderView* header = ui->cardsTableTest->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     QStringList headers = QStringList();
-    headers.append("Card Nuumber");
+    headers.append("Card Number");
     headers.append("Money amount");
     headers.append("State");
     ui->cardsTableTest->setHorizontalHeaderLabels(headers);
@@ -87,14 +88,8 @@ void MainWindow::initCardsPage() {
         y+=1;
     }
 
-//    ui->cardsTableTest->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->cardsTableTest->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-//    ui->cardsTableTest->resizeColumnsToContents();
-//    ui->cardsTableTest->setFixedSize(ui->cardsTableTest->horizontalHeader()->length() +
-//                       ui->cardsTableTest->verticalHeader()->width(),
-//                       ui->cardsTableTest->verticalHeader()->length() +
-//                       ui->cardsTableTest->horizontalHeader()->height());
 };
 
 void MainWindow::on_cardsPageBackBtn_clicked()
@@ -110,12 +105,52 @@ void MainWindow::on_cardsTableTest_itemDoubleClicked(QTableWidgetItem *item)
     //TODO
     if (_atm->existCard(item->text()))
     {
+    _atm->setCurrent(item->text());
     initCardMenuPage();
     ui->stackedWidget->setCurrentIndex(CARD_MENU_VIEW_PAGE_NUMBER);
     }
 }
 
 void MainWindow::initCardMenuPage() {
-//TODO
-//    _atm->exit();
+    if(_atm->currentCard() != nullptr) {
+        _atm->setCurrent(*(_atm->currentCard()->cardNumber()));
+    ui->moneyLabel->setText(QString::number(_atm->currentCard()->amount()));
+    ui->cardNumberLabel->setText(*(_atm->currentCard()->cardNumber()));
+
+    }
 };
+
+void MainWindow::on_cardMenuPageBackBtn_clicked()
+{
+    initCardsPage();
+    ui->stackedWidget->setCurrentIndex(CARDS_VIEW_PAGE_NUMBER);
+
+}
+
+void MainWindow::on_rechargeBtn_clicked()
+{
+    WithdrawRechargeDialog withdrawRechargeDialog;
+    withdrawRechargeDialog.setModal(true);
+    withdrawRechargeDialog.init(RECHARGE, _atm->currentCard(), this);
+    withdrawRechargeDialog.exec();
+
+}
+
+void MainWindow::on_withdrawBtn_clicked()
+{
+    WithdrawRechargeDialog withdrawRechargeDialog;
+    withdrawRechargeDialog.setModal(true);
+    withdrawRechargeDialog.init(WITHDRAW, _atm->currentCard(), this);
+    withdrawRechargeDialog.exec();
+
+}
+
+void MainWindow::on_changePasswordBtn_clicked()
+{
+
+}
+
+void MainWindow::on_transferBtn_clicked()
+{
+
+}

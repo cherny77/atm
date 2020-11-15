@@ -14,17 +14,20 @@ SOURCES += \
     card.cpp \
     databaseapi.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    withdrawrechargedialog.cpp
 
 HEADERS += \
     account.h \
     atm.h \
     card.h \
     databaseapi.h \
-    mainwindow.h
+    mainwindow.h \
+    withdrawrechargedialog.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    withdrawrechargedialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
