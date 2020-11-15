@@ -6,6 +6,7 @@ WithdrawRechargeDialog::WithdrawRechargeDialog(QWidget *parent) :
     ui(new Ui::WithdrawRechargeDialog)
 {
     ui->setupUi(this);
+    setFixedSize(size());
 }
 
 WithdrawRechargeDialog::~WithdrawRechargeDialog()

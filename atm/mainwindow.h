@@ -23,6 +23,7 @@ public:
     const int LOGIN_PAGE_NUMBER = 0;
     const int CARDS_VIEW_PAGE_NUMBER = 1;
     const int CARD_MENU_VIEW_PAGE_NUMBER = 2;
+    ATM* atm();
     void initCardMenuPage();
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();

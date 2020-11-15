@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "withdrawrechargedialog.h"
-
+#include "transferdialog.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), _atm(new ATM()), _loginConditionType(INPUT_CARD_NUMBER)
@@ -99,6 +99,10 @@ void MainWindow::on_cardsPageBackBtn_clicked()
 
 }
 
+ATM* MainWindow::atm() {
+    return _atm;
+};
+
 
 void MainWindow::on_cardsTableTest_itemDoubleClicked(QTableWidgetItem *item)
 {
@@ -152,5 +156,8 @@ void MainWindow::on_changePasswordBtn_clicked()
 
 void MainWindow::on_transferBtn_clicked()
 {
-
+    TransferDialog transferDialog;
+    transferDialog.setModal(true);
+    transferDialog.init(_atm->currentCard(), this);
+    transferDialog.exec();
 }

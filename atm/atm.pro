@@ -15,6 +15,7 @@ SOURCES += \
     databaseapi.cpp \
     main.cpp \
     mainwindow.cpp \
+    transferdialog.cpp \
     withdrawrechargedialog.cpp
 
 HEADERS += \
@@ -23,10 +24,12 @@ HEADERS += \
     card.h \
     databaseapi.h \
     mainwindow.h \
+    transferdialog.h \
     withdrawrechargedialog.h
 
 FORMS += \
     mainwindow.ui \
+    transferdialog.ui \
     withdrawrechargedialog.ui
 
 # Default rules for deployment.

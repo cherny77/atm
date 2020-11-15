@@ -32,7 +32,6 @@ private:
     TransactionType _transactionType;
     Card* _currCard;
     MainWindow* _mainWindow;
-
     void showError(QString errorMsg);
 
 };
