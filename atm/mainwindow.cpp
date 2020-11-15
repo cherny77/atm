@@ -113,7 +113,7 @@ void MainWindow::on_cardsTableTest_itemDoubleClicked(QTableWidgetItem *item)
 
 void MainWindow::initCardMenuPage() {
     if(_atm->currentCard() != nullptr) {
-        _atm->setCurrent(*(_atm->currentCard()->cardNumber()));
+    _atm->setCurrent(*(_atm->currentCard()->cardNumber()));
     ui->moneyLabel->setText(QString::number(_atm->currentCard()->amount()));
     ui->cardNumberLabel->setText(*(_atm->currentCard()->cardNumber()));
 
