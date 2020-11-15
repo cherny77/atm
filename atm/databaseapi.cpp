@@ -1,5 +1,6 @@
 #include "databaseapi.h"
 #include <QCryptographicHash>
+#include <iostream>
 
 DataBaseApi* DataBaseApi::dataBaseApi = nullptr;
 
@@ -13,11 +14,13 @@ bool operator==(const DBCard &a, const DBCard &b)
 DataBaseApi::DataBaseApi()
 {
 
-    this->map = QMap<size_t, QList<DBCard>>();
+    this->map = QMap<size_t, QList<DBCard*>>();
     this->addCard(1, "1", "1", true, 100);
     this->addCard(1, "11", "11", false, 1000);
     this->addCard(2, "22", "22", false, 100);
     this->addCard(2, "2", "2", false, 1000);
+
+    this->rechargeCard("2", 80);
 }
 
 void DataBaseApi::addCard(size_t acc, QString number, QString pin, bool isBlocked, long long amount)
@@ -26,7 +29,7 @@ void DataBaseApi::addCard(size_t acc, QString number, QString pin, bool isBlocke
     crypt->addData(number.toUtf8());
     crypt->addData(pin.toUtf8());
 
-    DBCard dbcard = DBCard(number, QString(crypt->result()), isBlocked, amount);
+    DBCard* dbcard = new DBCard(number, QString(crypt->result()), isBlocked, amount);
     if (this->map.contains(acc))
     {
         if (!this->map[acc].contains(dbcard))
@@ -36,7 +39,7 @@ void DataBaseApi::addCard(size_t acc, QString number, QString pin, bool isBlocke
         delete crypt;
         return;
     }
-    QList<DBCard> list = QList<DBCard>();
+    QList<DBCard*> list = QList<DBCard*>();
     list.append(dbcard);
     this->map.insert(acc, list);
     delete crypt;
@@ -55,9 +58,9 @@ bool DataBaseApi::existCard(QString number)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if (dbcard ._cardNumber == number && !dbcard._isBlocked) {
+            if (dbcard->_cardNumber == number && !dbcard->_isBlocked) {
                 return true;
             };
         }
@@ -70,10 +73,10 @@ Card* DataBaseApi::existCardGetCard(QString number)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if (dbcard._cardNumber == number) {
-                return new Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount);
+            if (dbcard->_cardNumber == number) {
+                return new Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount);
             };
         }
     }
@@ -85,11 +88,11 @@ bool DataBaseApi::enterCard(QString number, QString code)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && !dbcard->_isBlocked)
             {
-                return dbcard._cardCode == code;
+                return dbcard->_cardCode == code;
             }
         }
     }
@@ -102,11 +105,11 @@ Card* DataBaseApi::enterCardGetCard(QString number, QString code)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && (dbcard._cardCode == code))
+            if ((dbcard->_cardNumber == number) && (dbcard->_cardCode == code))
             {
-                return new Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount);
+                return new Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount);
             }
         }
     }
@@ -117,11 +120,11 @@ bool DataBaseApi::withdrawCard(QString number, long long amount)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && (dbcard._amount >= amount) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && (dbcard->_amount >= amount) && !dbcard->_isBlocked)
             {
-                    dbcard._amount -= amount;
+                    dbcard->_amount -= amount;
                     return true;
             }
         }
@@ -133,12 +136,12 @@ Card* DataBaseApi::withdrawCardGetCard(QString number, long long amount)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && (dbcard._amount >= amount) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && (dbcard->_amount >= amount) && !dbcard->_isBlocked)
             {
-                    dbcard._amount -= amount;
-                    return new Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount);
+                    dbcard->_amount -= amount;
+                    return new Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount);
             }
         }
     }
@@ -150,11 +153,13 @@ bool DataBaseApi::rechargeCard(QString number, long long amount)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : (this->map.find(accId).value()))
         {
-            if ((dbcard._cardNumber == number) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && !dbcard->_isBlocked)
             {
-                    dbcard._amount += amount;
+                dbcard->_amount = dbcard->_amount + amount;
+
+std::cout << "lol" << std::endl;
                     return true;
             }
         }
@@ -166,12 +171,12 @@ Card* DataBaseApi::rechargeCardGetCard(QString number, long long amount)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && !dbcard->_isBlocked)
             {
-                    dbcard._amount += amount;
-                    return new Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount);
+                    dbcard->_amount += amount;
+                    return new Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount);
             }
         }
     }
@@ -185,15 +190,15 @@ bool DataBaseApi::changePinCard(QString number, QString newPin)
     QCryptographicHash* crypt = new QCryptographicHash(QCryptographicHash::Md5);
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && !dbcard->_isBlocked)
             {
 
-                crypt->addData(dbcard._cardNumber->toUtf8());
+                crypt->addData(dbcard->_cardNumber->toUtf8());
                 crypt->addData(newPin.toUtf8());
-                delete dbcard._cardCode;
-                dbcard._cardCode = new QString(crypt->result());
+                delete dbcard->_cardCode;
+                dbcard->_cardCode = new QString(crypt->result());
                 delete crypt;
                 return true;
             }
@@ -206,17 +211,17 @@ Card* DataBaseApi::changePinCardGetCard(QString number, QString newPin)
     QCryptographicHash* crypt = new QCryptographicHash(QCryptographicHash::Md5);
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == number) && !dbcard._isBlocked)
+            if ((dbcard->_cardNumber == number) && !dbcard->_isBlocked)
             {
 
-                crypt->addData(dbcard._cardNumber->toUtf8());
+                crypt->addData(dbcard->_cardNumber->toUtf8());
                 crypt->addData(newPin.toUtf8());
-                delete dbcard._cardCode;
-                dbcard._cardCode = new QString(crypt->result());
+                delete dbcard->_cardCode;
+                dbcard->_cardCode = new QString(crypt->result());
                 delete crypt;
-                return new Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount);
+                return new Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount);
             }
         }
     }
@@ -231,21 +236,21 @@ bool DataBaseApi::transaction(QString from, QString to, long long amount)
     DBCard* toC;
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == from))
+            if ((dbcard->_cardNumber == from))
             {
-                if (dbcard._isBlocked || dbcard._amount < amount)
+                if (dbcard->_isBlocked || dbcard->_amount < amount)
                     return false;
                 else
-                    fromC = &dbcard;
+                    fromC = dbcard;
             }
-            if ((dbcard._cardNumber == to))
+            if ((dbcard->_cardNumber == to))
             {
-                if (dbcard._isBlocked)
+                if (dbcard->_isBlocked)
                     return false;
                 else
-                    toC = &dbcard;
+                    toC = dbcard;
             }
         }
     }
@@ -260,21 +265,21 @@ Card* DataBaseApi::transactionGetCard(QString from, QString to, long long amount
     DBCard* toC;
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if ((dbcard._cardNumber == from))
+            if ((dbcard->_cardNumber == from))
             {
-                if (dbcard._isBlocked || dbcard._amount < amount)
+                if (dbcard->_isBlocked || dbcard->_amount < amount)
                     return nullptr;
                 else
-                    fromC = &dbcard;
+                    fromC = dbcard;
             }
-            if ((dbcard._cardNumber == to))
+            if ((dbcard->_cardNumber == to))
             {
-                if (dbcard._isBlocked)
+                if (dbcard->_isBlocked)
                     return nullptr;
                 else
-                    toC = &dbcard;
+                    toC = dbcard;
             }
         }
     }
@@ -288,10 +293,10 @@ bool DataBaseApi::blockCard(QString number)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if (dbcard ._cardNumber == number) {
-                dbcard._isBlocked = true;
+            if (dbcard->_cardNumber == number) {
+                dbcard->_isBlocked = true;
                 return true;
             };
         }
@@ -304,11 +309,11 @@ Card* DataBaseApi::blockCardGetCard(QString number)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if (dbcard._cardNumber == number) {
-                dbcard._isBlocked = true;
-                return new Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount);
+            if (dbcard->_cardNumber == number) {
+                dbcard->_isBlocked = true;
+                return new Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount);
             };
         }
     }
@@ -320,13 +325,13 @@ Account* DataBaseApi::getAccoutByCardNumber(QString number)
 {
     for(size_t accId : this->map.keys())
     {
-        for(DBCard dbcard : this->map.find(accId).value())
+        for(DBCard* dbcard : this->map.find(accId).value())
         {
-            if (dbcard._cardNumber == number) {
+            if (dbcard->_cardNumber == number) {
                 Account* account = new Account(accId);
-                for(DBCard dbcard: this->map[accId])
+                for(DBCard* dbcard: this->map[accId])
                 {
-                    account->addCard(Card(*dbcard._cardNumber, dbcard._isBlocked, dbcard._amount));
+                    account->addCard(Card(*dbcard->_cardNumber, dbcard->_isBlocked, dbcard->_amount));
                 }
                 return account;
             };

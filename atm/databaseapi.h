@@ -51,7 +51,7 @@ private:
     DataBaseApi(); // ready
     ~DataBaseApi();
     static DataBaseApi* dataBaseApi;
-    QMap<size_t, QList<DBCard>> map;
+    QMap<size_t, QList<DBCard*>> map;
     void addCard(size_t acc, QString number, QString pin, bool isBlocked, long long amount);
 };
 
