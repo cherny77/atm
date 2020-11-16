@@ -12,6 +12,7 @@ SOURCES += \
     account.cpp \
     atm.cpp \
     card.cpp \
+    changepindialog.cpp \
     databaseapi.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -22,12 +23,14 @@ HEADERS += \
     account.h \
     atm.h \
     card.h \
+    changepindialog.h \
     databaseapi.h \
     mainwindow.h \
     transferdialog.h \
     withdrawrechargedialog.h
 
 FORMS += \
+    changepindialog.ui \
     mainwindow.ui \
     transferdialog.ui \
     withdrawrechargedialog.ui

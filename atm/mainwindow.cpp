@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "withdrawrechargedialog.h"
 #include "transferdialog.h"
+#include "changepindialog.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), _atm(new ATM()), _loginConditionType(INPUT_CARD_NUMBER)
@@ -28,6 +30,9 @@ void MainWindow::on_enterBtn_clicked()
                 ui->loginInput->clear();
                 ui->loginInput->setEchoMode(QLineEdit::Password);
             }
+            else {
+                showError(NO_SUCH_CARD_ERROR);
+            }
             break;
         case INPUT_PASSWORD:
         if(_atm->enterCard(*_tempNumberCard, ui->loginInput->text())) {
@@ -36,7 +41,9 @@ void MainWindow::on_enterBtn_clicked()
            _tempNumberCard = nullptr;
            initCardsPage();
            ui->stackedWidget-> setCurrentIndex(CARDS_VIEW_PAGE_NUMBER);
-
+        }
+        else {
+             showError(WRONG_PASS_ERROR);
         }
         break;
         case ENTERED:
@@ -46,6 +53,8 @@ void MainWindow::on_enterBtn_clicked()
 }
 
 void MainWindow::initLoginPage() {
+    ui->errorLabel->setVisible(false);
+    ui->errorLabel->setStyleSheet("QLabel { color : red; }");
     ui->loginLabel->setText(LOGIN_LABEL_TEXT);
     ui->enterBtn->setText(INSERT_BUTTON_TEXT);
     _loginConditionType = INPUT_CARD_NUMBER;
@@ -151,7 +160,10 @@ void MainWindow::on_withdrawBtn_clicked()
 
 void MainWindow::on_changePasswordBtn_clicked()
 {
-
+    ChangePinDialog changePinDialog;
+    changePinDialog.setModal(true);
+    changePinDialog.init(_atm->currentCard(), this);
+    changePinDialog.exec();
 }
 
 void MainWindow::on_transferBtn_clicked()
@@ -160,4 +172,9 @@ void MainWindow::on_transferBtn_clicked()
     transferDialog.setModal(true);
     transferDialog.init(_atm->currentCard(), this);
     transferDialog.exec();
+}
+
+void MainWindow :: showError(QString errorMsg){
+    ui->errorLabel->setText(errorMsg);
+    ui->errorLabel->setVisible(true);
 }

@@ -2,5 +2,6 @@
     <qresource prefix="/MyFiles">
         <file>res/avatar.png</file>
         <file>res/card.png</file>
+        <file>res/lock-icon.png</file>
     </qresource>
 </RCC>

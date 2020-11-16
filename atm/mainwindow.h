@@ -20,6 +20,8 @@ public:
     const QString LOGIN_LABEL_TEXT = "Login";
     const QString INSERT_BUTTON_TEXT = "Insert card";
     const QString ENTER_BUTTON_TEXT = "Enter";
+    const QString WRONG_PASS_ERROR = "WRONG PASSWORD";
+    const QString NO_SUCH_CARD_ERROR = "THERE IS NO SUCH CARD";
     const int LOGIN_PAGE_NUMBER = 0;
     const int CARDS_VIEW_PAGE_NUMBER = 1;
     const int CARD_MENU_VIEW_PAGE_NUMBER = 2;
@@ -49,6 +51,7 @@ private:
     ATM *_atm;
     QString *_tempNumberCard;
     LoginConditionType _loginConditionType;
+    void showError(QString errorMsg);
     void initLoginPage();
     void initCardsPage();
 
